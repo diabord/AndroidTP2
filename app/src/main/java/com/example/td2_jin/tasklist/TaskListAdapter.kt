@@ -17,10 +17,8 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
     }
 
     override fun getItemCount(): Int {
-        return taskList.size;
+        return taskList.size
     }
-
-
 
     override fun onBindViewHolder(holder: TaskListAdapter.TaskViewHolder, position: Int) {
         holder.bind(taskList[position])

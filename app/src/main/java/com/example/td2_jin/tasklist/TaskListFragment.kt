@@ -9,20 +9,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.td2_jin.R
 
-private val taskList = listOf("Task 1", "Task 2", "Task 3")
 
 class TaskListFragment : Fragment() {
+    private val taskList = listOf("Task 1", "Task 2", "Task 3")
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
-        var recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
-        recyclerView?.adapter = TaskListAdapter(taskList)
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = TaskListAdapter(taskList)
     }
 }
