@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.td2_jin.R
 
-class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,11 +25,11 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
     }
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(taskTitle: String) {
+        fun bind(task: Task) {
             itemView.apply { // `apply {}` permet d'éviter de répéter `itemView.*`
                 // TODO: afficher les données et attacher les listeners aux différentes vues de notre [itemView]
                 val textView =  findViewById<TextView>(R.id.task_title)
-                textView.text = taskTitle
+                textView.text = """${task.title}  |  ${task.description}"""
             }
         }
     }
