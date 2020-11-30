@@ -3,9 +3,12 @@ package com.example.td2_jin.tasklist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.td2_jin.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
 
 class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
     override fun onCreateViewHolder(
@@ -30,7 +33,13 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
                 // TODO: afficher les données et attacher les listeners aux différentes vues de notre [itemView]
                 val textView =  findViewById<TextView>(R.id.task_title)
                 textView.text = """${task.title}  |  ${task.description}"""
+
+                findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+                    onDeleteClickListener?.invoke(task)
+                }
             }
         }
     }
+
+    var onDeleteClickListener: ((Task) -> Unit)? = null
 }

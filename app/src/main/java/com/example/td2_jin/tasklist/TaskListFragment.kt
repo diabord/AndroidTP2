@@ -31,13 +31,21 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = TaskListAdapter(taskList)
+        val taskListAdapter = TaskListAdapter(taskList)
+        taskListAdapter.onDeleteClickListener = {
+            task ->
+            val pos = taskList.indexOf(task)
+            taskList.remove(task)
+            (recyclerView.adapter as TaskListAdapter).notifyItemRemoved(pos)
+        }
+        recyclerView.adapter = taskListAdapter
 
+        
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
             val task = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
             taskList.add(task);
 
-            (recyclerView.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1);
+            (recyclerView.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
         }
     }
 }
