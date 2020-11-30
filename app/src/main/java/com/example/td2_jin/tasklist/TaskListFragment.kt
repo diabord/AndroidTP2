@@ -1,5 +1,6 @@
 package com.example.td2_jin.tasklist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.td2_jin.R
+import com.example.td2_jin.task.TaskActivity
+import com.example.td2_jin.task.TaskActivity.Companion.ADD_TASK_REQUEST_CODE
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
@@ -42,10 +45,19 @@ class TaskListFragment : Fragment() {
 
         
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
-            val task = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
-            taskList.add(task);
-
-            (recyclerView.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
+            //val task = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
+            val intent = Intent(activity, TaskActivity::class.java)
+            startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
+        taskList.add(task)
+
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
+        (recyclerView?.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
