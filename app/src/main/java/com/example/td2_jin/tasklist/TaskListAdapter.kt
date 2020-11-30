@@ -37,9 +37,14 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
                 findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
                     onDeleteClickListener?.invoke(task)
                 }
+
+                findViewById<ImageButton>(R.id.editButton).setOnClickListener {
+                    onEditClickListener?.invoke(task)
+                }
             }
         }
     }
 
     var onDeleteClickListener: ((Task) -> Unit)? = null
+    var onEditClickListener: ((Task) -> Unit)? = null
 }

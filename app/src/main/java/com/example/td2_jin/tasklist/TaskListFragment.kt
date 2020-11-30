@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.td2_jin.R
 import com.example.td2_jin.task.TaskActivity
 import com.example.td2_jin.task.TaskActivity.Companion.ADD_TASK_REQUEST_CODE
+import com.example.td2_jin.task.TaskActivity.Companion.EDIT_TASK_REQUEST_CODE
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
@@ -36,10 +37,15 @@ class TaskListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val taskListAdapter = TaskListAdapter(taskList)
         taskListAdapter.onDeleteClickListener = {
-            task ->
-            val pos = taskList.indexOf(task)
-            taskList.remove(task)
+            val pos = taskList.indexOf(it)
+            taskList.remove(it)
             (recyclerView.adapter as TaskListAdapter).notifyItemRemoved(pos)
+        }
+
+        taskListAdapter.onEditClickListener = {
+            val intent = Intent(requireContext(), TaskActivity::class.java)
+            intent.putExtra(TaskActivity.TASK_KEY, it)
+            startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
         }
         recyclerView.adapter = taskListAdapter
 
@@ -53,10 +59,16 @@ class TaskListFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
-        taskList.add(task)
-
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
-        (recyclerView?.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
+        if(requestCode == ADD_TASK_REQUEST_CODE) {
+            taskList.add(task)
+            (recyclerView?.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
+        }
+        else if (requestCode == EDIT_TASK_REQUEST_CODE) {
+            val pos = taskList.indexOf(taskList.find { task.id == it.id  })
+            taskList[pos] = task
+            (recyclerView?.adapter as TaskListAdapter).notifyItemChanged(pos)
+        }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
