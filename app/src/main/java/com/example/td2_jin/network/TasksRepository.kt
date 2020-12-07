@@ -24,4 +24,29 @@ class TasksRepository {
             _taskList.value = fetchedTasks!!
         }
     }
+
+    suspend fun addTask(task : Task) {
+        val editedTask = tasksWebService.createTask(task)
+        val editableList = _taskList.value.orEmpty().toMutableList()
+        editableList.add(editedTask.body()!!)
+        _taskList.value = editableList
+    }
+
+    suspend fun deleteTask(id : String) {
+        val editedTask = tasksWebService.deleteTask(id)
+        if(editedTask.isSuccessful) {
+            val editableList = _taskList.value.orEmpty().toMutableList()
+            val deleteTask = editableList.find { id == it.id }
+            editableList.remove(deleteTask)
+            _taskList.value = editableList
+        }
+    }
+
+    suspend fun updateTask(task : Task) {
+        val editedTask = tasksWebService.updateTask(task)
+        val editableList = _taskList.value.orEmpty().toMutableList()
+        val position = editableList.indexOfFirst { task.id == it.id }
+        editableList[position] = editedTask.body()!!
+        _taskList.value = editableList
+    }
 }

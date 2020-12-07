@@ -49,6 +49,10 @@ class TaskListFragment : Fragment() {
             val pos = taskList.indexOf(it)
             taskList.remove(it)
             (recyclerView.adapter as TaskListAdapter).notifyItemRemoved(pos)
+
+            lifecycleScope.launch {
+                tasksRepository.deleteTask(it.id);
+            }
         }
 
         taskListAdapter.onEditClickListener = {
@@ -78,11 +82,19 @@ class TaskListFragment : Fragment() {
         if(requestCode == ADD_TASK_REQUEST_CODE) {
             taskList.add(task)
             (recyclerView?.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
+
+            lifecycleScope.launch {
+                tasksRepository.addTask(task);
+            }
         }
         else if (requestCode == EDIT_TASK_REQUEST_CODE) {
             val pos = taskList.indexOf(taskList.find { task.id == it.id  })
             taskList[pos] = task
             (recyclerView?.adapter as TaskListAdapter).notifyItemChanged(pos)
+
+            lifecycleScope.launch {
+                tasksRepository.updateTask(task);
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data)
