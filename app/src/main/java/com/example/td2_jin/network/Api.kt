@@ -5,12 +5,13 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.create
 
 object Api {
 
     // constantes qui serviront à faire les requêtes
     private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
-    private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
+    private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODMsImV4cCI6MTYzODg4NTA1M30.3JFsCxguJlapaUUsUvxAAjr63bFi3kFbRwMJ5dOM1UM"
 
     // on construit une instance de parseur de JSON:
     private val jsonSerializer = Json {
@@ -44,5 +45,9 @@ object Api {
 
     val userService: UserService by lazy {
         retrofit.create(UserService::class.java)
+    }
+
+    val tasksWebService : TasksWebService by lazy {
+        retrofit.create(TasksWebService::class.java)
     }
 }

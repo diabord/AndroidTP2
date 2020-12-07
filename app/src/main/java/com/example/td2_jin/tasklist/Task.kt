@@ -1,7 +1,15 @@
 package com.example.td2_jin.tasklist
 
-import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class Task(val id : String, var title : String, var description: String = "default") : Serializable {
+@Serializable
+data class Task(
+        @SerialName("id")
+        val id : String,
+        @SerialName("title")
+        var title : String,
+        @SerialName("description")
+        var description: String = "default") : java.io.Serializable{
 
 }
