@@ -48,4 +48,9 @@ class TaskActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    /*class AddTask : ActivityResultContract<Task, Task>() {
+        override fun createIntent(...)
+        override fun parseResult(...)
+    }*/
 }
