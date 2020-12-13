@@ -10,7 +10,9 @@ import com.example.td2_jin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
-class TaskListAdapter(public var taskList: MutableList<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter() : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+    var taskList: List<Task> = emptyList()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

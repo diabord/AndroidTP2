@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,12 +27,15 @@ import kotlinx.coroutines.launch
 
 
 class TaskListFragment : Fragment() {
-    private var taskList = mutableListOf(
+    /*private var _taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
         Task(id = "id_2", title = "Task 2"),
-        Task(id = "id_3", title = "Task 3"))
+        Task(id = "id_3", title = "Task 3"))*/
 
-    private val tasksRepository = TasksRepository()
+    //private val tasksRepository = TasksRepository()
+
+    private val taskListAdapter = TaskListAdapter()
+    private val viewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,10 +49,10 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        val taskListAdapter = TaskListAdapter(taskList)
-        taskListAdapter.onDeleteClickListener = {
-            val pos = taskList.indexOf(it)
-            taskList.remove(it)
+        //val taskListAdapter = TaskListAdapter()
+        /*taskListAdapter.onDeleteClickListener = {
+            val pos = _taskList.indexOf(it)
+            _taskList.remove(it)
             (recyclerView.adapter as TaskListAdapter).notifyItemRemoved(pos)
 
             lifecycleScope.launch {
@@ -59,8 +64,8 @@ class TaskListFragment : Fragment() {
             val intent = Intent(requireContext(), TaskActivity::class.java)
             intent.putExtra(TaskActivity.TASK_KEY, it)
             startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
-        }
-        recyclerView.adapter = taskListAdapter
+        }*/
+       recyclerView.adapter = taskListAdapter
 
         
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
@@ -69,39 +74,43 @@ class TaskListFragment : Fragment() {
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
         }
 
-        tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
+        /*tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
             taskListAdapter.taskList.clear();
             taskListAdapter.taskList.addAll(it)
             taskListAdapter.notifyDataSetChanged()
+        })*/
+
+        viewModel.taskList.observe(viewLifecycleOwner, Observer<List<Task>>{ tasks ->
+            taskListAdapter.taskList = tasks.orEmpty()
+            taskListAdapter.notifyDataSetChanged()
         })
+
+        taskListAdapter.onDeleteClickListener = {
+            viewModel.deleteTask(it)
+        }
+
+        taskListAdapter.onEditClickListener = {
+            val intent = Intent(requireContext(), TaskActivity::class.java)
+            intent.putExtra(TaskActivity.TASK_KEY, it)
+            startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
         if(requestCode == ADD_TASK_REQUEST_CODE) {
-            taskList.add(task)
-            (recyclerView?.adapter as TaskListAdapter).notifyItemInserted(taskList.size - 1)
-
-            lifecycleScope.launch {
-                tasksRepository.addTask(task);
-            }
+            viewModel.addTask(task)
         }
         else if (requestCode == EDIT_TASK_REQUEST_CODE) {
-            val pos = taskList.indexOf(taskList.find { task.id == it.id  })
-            taskList[pos] = task
-            (recyclerView?.adapter as TaskListAdapter).notifyItemChanged(pos)
-
-            lifecycleScope.launch {
-                tasksRepository.updateTask(task);
-            }
+            viewModel.editTask(task);
         }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onResume() {
-        super.onResume()
+        viewModel.loadTasks();
 
         val textView = view?.findViewById<TextView>(R.id.networkTextView)
         lifecycleScope.launch {
@@ -109,8 +118,10 @@ class TaskListFragment : Fragment() {
             textView?.text = "${userInfo.firstName} ${userInfo.lastName}"
         }
 
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
             tasksRepository.refresh()
-        }
+        }*/
+
+        super.onResume()
     }
 }
