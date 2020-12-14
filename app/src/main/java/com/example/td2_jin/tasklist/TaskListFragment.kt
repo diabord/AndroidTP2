@@ -106,6 +106,8 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //if(requestCode == ) return
+
         val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
         if(requestCode == ADD_TASK_REQUEST_CODE) {
