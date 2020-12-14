@@ -57,7 +57,7 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.imageButtonValidate).setOnClickListener {
-            //updateUserInfo()
+            updateUserInfo()
         }
     }
 

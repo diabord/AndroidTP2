@@ -140,7 +140,7 @@ class TaskListFragment : Fragment() {
             }
             EDIT_USER_INFO_CODE -> {
                 val userInfo = data!!.getSerializableExtra(UserInfoActivity.USERINFO_KEY) as UserInfo
-                //userInfoViewModel.updateUserInfo(userInfo)
+                userInfoViewModel.updateUserInfo(userInfo)
             }
         }
 
