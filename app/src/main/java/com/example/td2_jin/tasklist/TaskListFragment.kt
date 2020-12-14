@@ -7,20 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.td2_jin.R
 import com.example.td2_jin.network.Api
-import com.example.td2_jin.network.TasksRepository
 import com.example.td2_jin.task.TaskActivity
 import com.example.td2_jin.task.TaskActivity.Companion.ADD_TASK_REQUEST_CODE
 import com.example.td2_jin.task.TaskActivity.Companion.EDIT_TASK_REQUEST_CODE
@@ -124,15 +120,25 @@ class TaskListFragment : Fragment() {
 
     override fun onResume() {
         val textView = view?.findViewById<TextView>(R.id.networkTextView)
+        val profilPicture = view?.findViewById<ImageView>(R.id.profilPicture)
         lifecycleScope.launch {
-            val userInfo = Api.userService.getInfo().body()!!
+            val userInfo = Api.userWebService.getInfo().body()!!
             textView?.text = "${userInfo.firstName} ${userInfo.lastName}"
+            if(userInfo.avatar != null){
+                profilPicture?.load(userInfo.avatar) {
+                    transformations(CircleCropTransformation())
+                }
+            }else{
+                profilPicture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
+                    transformations(CircleCropTransformation())
+                }
+            }
         }
 
-        val profilPciture = view?.findViewById<ImageView>(R.id.profilPicture)
+        /*val profilPciture = view?.findViewById<ImageView>(R.id.profilPicture)
         profilPciture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
             transformations(CircleCropTransformation())
-        }
+        }*/
 
 
         /*lifecycleScope.launch {
