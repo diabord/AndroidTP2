@@ -94,6 +94,8 @@ class TaskListFragment : Fragment() {
             intent.putExtra(TaskActivity.TASK_KEY, it)
             startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
         }
+
+        viewModel.loadTasks();
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,8 +112,6 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onResume() {
-        viewModel.loadTasks();
-
         val textView = view?.findViewById<TextView>(R.id.networkTextView)
         lifecycleScope.launch {
             val userInfo = Api.userService.getInfo().body()!!
