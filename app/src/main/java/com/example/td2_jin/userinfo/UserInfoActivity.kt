@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class UserInfoActivity : AppCompatActivity() {
@@ -78,41 +79,28 @@ class UserInfoActivity : AppCompatActivity() {
         }
     }
 
-    // create a temp file and get a uri for it
-    private val photoUri = getContentUri("temp")
-
     // register
-    /*private val takePicture =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success){
-                val tmpFile = File.createTempFile("avatar", "jpeg")
-                tmpFile.outputStream().use {
-                    picture.compress(Bitmap.CompressFormat.JPEG, 100, it)
-                }
-                handleImage(photoUri)
-            }
-            else Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
-        }*/
-    private val takePicture =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { picture ->
-            val tmpFile = File.createTempFile("avatar", "jpeg")
-            tmpFile.outputStream().use {
-                picture.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            }
-            handleImage(tmpFile.toUri())
+    private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        val tmpFile = File.createTempFile("avatar", "jpeg")
+        tmpFile.outputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
+        handleImage(tmpFile.toUri())
+    }
 
     // use
-    //private fun openCamera() = takePicture.launch(photoUri)
     private fun openCamera() = takePicture.launch()
 
     // convert
     private fun convert(uri: Uri) =
-        MultipartBody.Part.create(uri.toFile().asRequestBody("image/jpeg".toMediaType()))
+            MultipartBody.Part.createFormData(
+                    name = "avatar",
+                    filename = "temp.jpeg",
+                    body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+            )
 
     //handle image
     private fun handleImage(photoUri: Uri) {
-        //println("HEEEEEEEEEEEEEEHOOOOOOOOOOOOOOOOOOOOOOOO : " + convert(photoUri))
         lifecycleScope.launch {
             userWebService.updateAvatar(convert(photoUri))
         }
