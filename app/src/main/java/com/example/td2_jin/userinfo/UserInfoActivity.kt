@@ -9,7 +9,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore.Files.getContentUri
+import android.text.Editable
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -20,6 +23,9 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.example.td2_jin.R
 import com.example.td2_jin.network.Api
+import com.example.td2_jin.network.UserInfo
+import com.example.td2_jin.task.TaskActivity
+import com.example.td2_jin.tasklist.Task
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -30,7 +36,9 @@ import java.io.File
 class UserInfoActivity : AppCompatActivity() {
     companion object {
         const val CHANGE_PROFILE_PICTURE_REQUEST_CODE = 777
+        const val EDIT_USER_INFO_CODE = 888
         const val IMAGE_KEY = "IMAGE"
+        const val USERINFO_KEY = "Userinfo"
     }
 
     private val userWebService = Api.userWebService
@@ -46,6 +54,10 @@ class UserInfoActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.upload_image_button).setOnClickListener {
             pickInGallery.launch("image/*")
+        }
+
+        findViewById<ImageButton>(R.id.imageButtonValidate).setOnClickListener {
+            updateUserInfo()
         }
     }
 
@@ -78,6 +90,20 @@ class UserInfoActivity : AppCompatActivity() {
             show()
         }
     }
+
+    private fun updateUserInfo(){
+        val extra = intent.getSerializableExtra(USERINFO_KEY) as? UserInfo
+        extra?.firstName = findViewById<EditText>(R.id.Prenom).text.toString()
+        extra?.lastName = findViewById<EditText>(R.id.Nom).text.toString()
+        extra?.email = findViewById<EditText>(R.id.Email).text.toString()
+        intent.putExtra(UserInfoActivity.USERINFO_KEY, extra)
+        setResult(1,intent)
+        finish()
+
+    }
+
+    // create a temp file and get a uri for it
+    private val photoUri = getContentUri("temp")
 
     // register
     private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
