@@ -24,6 +24,8 @@ import com.example.td2_jin.network.TasksRepository
 import com.example.td2_jin.task.TaskActivity
 import com.example.td2_jin.task.TaskActivity.Companion.ADD_TASK_REQUEST_CODE
 import com.example.td2_jin.task.TaskActivity.Companion.EDIT_TASK_REQUEST_CODE
+import com.example.td2_jin.userinfo.UserInfoActivity
+import com.example.td2_jin.userinfo.UserInfoActivity.Companion.CHANGE_PROFILE_PICTURE_REQUEST_CODE
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 //import java.util.*
@@ -96,6 +98,12 @@ class TaskListFragment : Fragment() {
             val intent = Intent(requireContext(), TaskActivity::class.java)
             intent.putExtra(TaskActivity.TASK_KEY, it)
             startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
+        }
+
+        val profilePicture = view?.findViewById<ImageView>(R.id.profilPicture)
+        profilePicture.setOnClickListener{
+            val intent = Intent(activity, UserInfoActivity::class.java)
+            startActivityForResult(intent, CHANGE_PROFILE_PICTURE_REQUEST_CODE)
         }
 
         viewModel.loadTasks();
