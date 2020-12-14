@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -15,6 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.td2_jin.R
 import com.example.td2_jin.network.Api
 import com.example.td2_jin.network.TasksRepository
@@ -117,6 +120,12 @@ class TaskListFragment : Fragment() {
             val userInfo = Api.userService.getInfo().body()!!
             textView?.text = "${userInfo.firstName} ${userInfo.lastName}"
         }
+
+        val profilPciture = view?.findViewById<ImageView>(R.id.profilPicture)
+        profilPciture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
+            transformations(CircleCropTransformation())
+        }
+
 
         /*lifecycleScope.launch {
             tasksRepository.refresh()
