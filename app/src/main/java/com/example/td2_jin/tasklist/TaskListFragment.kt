@@ -93,6 +93,17 @@ class TaskListFragment : Fragment() {
         userInfoViewModel.userInfo.observe(viewLifecycleOwner, {
             val textView = view.findViewById<TextView>(R.id.networkTextView)
             textView?.text = "${it.firstName} ${it.lastName}"
+            val profilPicture = view?.findViewById<ImageView>(R.id.profilPicture)
+            val avatar = it.avatar
+            if(avatar != null){
+                profilPicture?.load(avatar) {
+                    transformations(CircleCropTransformation())
+                }
+            }else{
+                profilPicture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
+                    transformations(CircleCropTransformation())
+                }
+            }
         })
 
         taskListAdapter.onDeleteClickListener = {
@@ -129,7 +140,7 @@ class TaskListFragment : Fragment() {
             }
             EDIT_USER_INFO_CODE -> {
                 val userInfo = data!!.getSerializableExtra(UserInfoActivity.USERINFO_KEY) as UserInfo
-                userInfoViewModel.updateUserInfo(userInfo)
+                //userInfoViewModel.updateUserInfo(userInfo)
             }
         }
 
@@ -168,11 +179,6 @@ class TaskListFragment : Fragment() {
         }*/
 
         userInfoViewModel.loadUserInfo()
-
-        val profilPciture = view?.findViewById<ImageView>(R.id.profilPicture)
-        profilPciture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
-            transformations(CircleCropTransformation())
-        }
 
 
         /*lifecycleScope.launch {
