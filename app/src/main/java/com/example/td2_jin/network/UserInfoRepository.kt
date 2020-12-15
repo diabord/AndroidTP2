@@ -13,7 +13,12 @@ class UserInfoRepository {
     }
 
     suspend fun updateUserInfo(userInfo: UserInfo): UserInfo? {
-        val response = userWebService.getInfo()
+        val response = userWebService.update(userInfo)
         return if (response.isSuccessful) response.body() else null
     }
+
+    /*suspend fun updateUserAvatar(userAvatar: String): String? {
+        //val response = userWebService.updateAvatar()
+        return if (response.isSuccessful) response.body() else null
+    }*/
 }

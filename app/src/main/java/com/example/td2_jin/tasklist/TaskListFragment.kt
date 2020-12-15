@@ -22,7 +22,6 @@ import com.example.td2_jin.task.TaskActivity
 import com.example.td2_jin.task.TaskActivity.Companion.ADD_TASK_REQUEST_CODE
 import com.example.td2_jin.task.TaskActivity.Companion.EDIT_TASK_REQUEST_CODE
 import com.example.td2_jin.userinfo.UserInfoActivity
-import com.example.td2_jin.userinfo.UserInfoActivity.Companion.CHANGE_PROFILE_PICTURE_REQUEST_CODE
 import com.example.td2_jin.userinfo.UserInfoActivity.Companion.EDIT_USER_INFO_CODE
 import com.example.td2_jin.userinfo.UserInfoViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -121,7 +120,7 @@ class TaskListFragment : Fragment() {
             val userInfo : UserInfo = userInfoViewModel.userInfo.value!!
             val intent = Intent(activity, UserInfoActivity::class.java)
             intent.putExtra(UserInfoActivity.USERINFO_KEY, userInfo)
-            startActivityForResult(intent, CHANGE_PROFILE_PICTURE_REQUEST_CODE)
+            startActivityForResult(intent, EDIT_USER_INFO_CODE)
         }
 
         taskListViewModel.loadTasks();

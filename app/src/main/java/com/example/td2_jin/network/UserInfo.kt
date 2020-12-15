@@ -12,7 +12,7 @@ data class UserInfo(
     @SerialName("lastname")
     var lastName: String,
     @SerialName("avatar")
-    val avatar: String?
+    var avatar: String?
 ): java.io.Serializable{
 
 }

@@ -35,18 +35,21 @@ import java.io.File
 
 class UserInfoActivity : AppCompatActivity() {
     companion object {
-        const val CHANGE_PROFILE_PICTURE_REQUEST_CODE = 777
-        const val EDIT_USER_INFO_CODE = 888
+        const val EDIT_USER_INFO_CODE = 777
         const val IMAGE_KEY = "IMAGE"
         const val USERINFO_KEY = "Userinfo"
     }
 
     private val userWebService = Api.userWebService
 
+    private var userInfo : UserInfo? = null
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
+
+        userInfo = intent.getSerializableExtra(USERINFO_KEY) as? UserInfo
 
         findViewById<Button>(R.id.take_picture_button).setOnClickListener {
             askCameraPermissionAndOpenCamera()
@@ -92,11 +95,10 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private fun updateUserInfo(){
-        val extra = intent.getSerializableExtra(USERINFO_KEY) as? UserInfo
-        extra?.firstName = findViewById<EditText>(R.id.Prenom).text.toString()
-        extra?.lastName = findViewById<EditText>(R.id.Nom).text.toString()
-        extra?.email = findViewById<EditText>(R.id.Email).text.toString()
-        intent.putExtra(UserInfoActivity.USERINFO_KEY, extra)
+        userInfo?.firstName = findViewById<EditText>(R.id.Prenom).text.toString()
+        userInfo?.lastName = findViewById<EditText>(R.id.Nom).text.toString()
+        userInfo?.email = findViewById<EditText>(R.id.Email).text.toString()
+        intent.putExtra(UserInfoActivity.USERINFO_KEY, userInfo)
         setResult(1,intent)
         finish()
 
