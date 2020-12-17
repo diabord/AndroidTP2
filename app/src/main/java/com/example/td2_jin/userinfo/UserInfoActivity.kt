@@ -16,10 +16,12 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.td2_jin.R
 import com.example.td2_jin.network.Api
@@ -41,6 +43,7 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private val userWebService = Api.userWebService
+    //private val userInfoViewModel: UserInfoViewModel by viewModels()
 
     private var userInfo : UserInfo? = null
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -121,9 +122,11 @@ class TaskListFragment : Fragment() {
             val intent = Intent(activity, UserInfoActivity::class.java)
             intent.putExtra(UserInfoActivity.USERINFO_KEY, userInfo)
             startActivityForResult(intent, EDIT_USER_INFO_CODE)
+            //startActivity(intent);
         }
 
         taskListViewModel.loadTasks();
+        userInfoViewModel.loadUserInfo()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,7 +142,8 @@ class TaskListFragment : Fragment() {
             }
             EDIT_USER_INFO_CODE -> {
                 val userInfo = data!!.getSerializableExtra(UserInfoActivity.USERINFO_KEY) as UserInfo
-                userInfoViewModel.updateUserInfo(userInfo)
+                var feedback = Toast.makeText(context, null, Toast.LENGTH_SHORT)
+                userInfoViewModel.updateUserInfo(userInfo, feedback)
             }
         }
 
@@ -176,8 +180,6 @@ class TaskListFragment : Fragment() {
                 }
             }
         }*/
-
-        userInfoViewModel.loadUserInfo()
 
 
         /*lifecycleScope.launch {
