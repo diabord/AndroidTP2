@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.td2_jin.tasklist.Task
 
 class TasksRepository {
-    private val tasksWebService = Api.tasksWebService
+    private val tasksWebService = Api.INSTANCE.tasksWebService
 
     suspend fun loadTasks(): List<Task>? {
         val response = tasksWebService.getTasks()

@@ -1,16 +1,23 @@
 package com.example.td2_jin.network
 
+import android.content.Context
+import androidx.preference.PreferenceManager
+import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
+import com.example.td2_jin.network.Api.Companion.BASE_URL
+//import com.example.td2_jin.network.Api.Companion.TOKEN
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
-object Api {
+class Api(private val context: Context) {
+    companion object {
+        private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
+       // private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMDYsImV4cCI6MTYzOTQwNjM4NH0.2Zu5rXcbWhoLRwG6AXI5CCzpNVaO86D8uUV2GLpt0MI"
+        lateinit var INSTANCE: Api
 
-    // constantes qui serviront à faire les requêtes
-    private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
-    private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMDYsImV4cCI6MTYzOTQwNjM4NH0.2Zu5rXcbWhoLRwG6AXI5CCzpNVaO86D8uUV2GLpt0MI"
+    }
 
     // on construit une instance de parseur de JSON:
     private val jsonSerializer = Json {
@@ -20,33 +27,37 @@ object Api {
 
     // instance de convertisseur qui parse le JSON renvoyé par le serveur:
     private val converterFactory =
-        jsonSerializer.asConverterFactory("application/json".toMediaType())
+            jsonSerializer.asConverterFactory("application/json".toMediaType())
 
     // client HTTP
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                // intercepteur qui ajoute le `header` d'authentification avec votre token:
-                val newRequest = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $TOKEN")
-                    .build()
-                chain.proceed(newRequest)
-            }
-            .build()
+                .addInterceptor { chain ->
+                    // intercepteur qui ajoute le `header` d'authentification avec votre token:
+                    val newRequest = chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer ${getToken()}")
+                            .build()
+                    chain.proceed(newRequest)
+                }
+                .build()
     }
 
     // permettra d'implémenter les services que nous allons créer:
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(converterFactory)
-        .build()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(converterFactory)
+            .build()
 
     val userWebService: UserWebService by lazy {
         retrofit.create(UserWebService::class.java)
     }
 
-    val tasksWebService : TasksWebService by lazy {
+    val tasksWebService: TasksWebService by lazy {
         retrofit.create(TasksWebService::class.java)
+    }
+
+    fun getToken() : String{
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")!!
     }
 }

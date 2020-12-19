@@ -42,7 +42,7 @@ class UserInfoActivity : AppCompatActivity() {
         const val USERINFO_KEY = "Userinfo"
     }
 
-    private val userWebService = Api.userWebService
+    private val userWebService = Api.INSTANCE.userWebService
     //private val userInfoViewModel: UserInfoViewModel by viewModels()
 
     private var userInfo : UserInfo? = null

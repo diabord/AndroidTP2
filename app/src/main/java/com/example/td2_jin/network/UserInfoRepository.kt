@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.td2_jin.tasklist.Task
 
 class UserInfoRepository {
-    private val userWebService = Api.userWebService
+    private val userWebService = Api.INSTANCE.userWebService
 
     suspend fun loadUserInfo(): UserInfo? {
         val response = userWebService.getInfo()
