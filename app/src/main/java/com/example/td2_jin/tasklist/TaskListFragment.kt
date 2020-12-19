@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.td2_jin.MainActivity
 import com.example.td2_jin.R
+import com.example.td2_jin.databinding.FragmentTaskListBinding
 import com.example.td2_jin.network.Api
 import com.example.td2_jin.network.UserInfo
 import com.example.td2_jin.task.TaskActivity
@@ -42,17 +45,26 @@ class TaskListFragment : Fragment() {
     private val taskListViewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
     private val userInfoViewModel: UserInfoViewModel by viewModels()
 
+    //private lateinit var binding: FragmentTaskListBinding
+    private var _binding: FragmentTaskListBinding? = null
+    private val binding get() = _binding!!
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
-        return rootView
+        /*val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+        return rootView*/
+        _binding = FragmentTaskListBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        //val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity)
         //val taskListAdapter = TaskListAdapter()
         /*taskListAdapter.onDeleteClickListener = {
@@ -72,8 +84,8 @@ class TaskListFragment : Fragment() {
         }*/
        recyclerView.adapter = taskListAdapter
 
-        
-        view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
+        //view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
             //val task = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
@@ -91,16 +103,14 @@ class TaskListFragment : Fragment() {
         })
 
         userInfoViewModel.userInfo.observe(viewLifecycleOwner, {
-            val textView = view.findViewById<TextView>(R.id.networkTextView)
-            textView?.text = "${it.firstName} ${it.lastName}"
-            val profilPicture = view?.findViewById<ImageView>(R.id.profilPicture)
+            binding.userInfo = it
             val avatar = it.avatar
             if(avatar != null){
-                profilPicture?.load(avatar) {
+                binding.profilPicture.load(avatar) {
                     transformations(CircleCropTransformation())
                 }
             }else{
-                profilPicture?.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
+                binding.profilPicture.load("https://toppng.com/public/uploads/thumbnail/an-error-occurred-john-cena-are-you-sure-about-that-11562978196xueu8aklz5.png") {
                     transformations(CircleCropTransformation())
                 }
             }
@@ -116,8 +126,9 @@ class TaskListFragment : Fragment() {
             startActivityForResult(intent, EDIT_TASK_REQUEST_CODE)
         }
 
-        val profilePicture = view?.findViewById<ImageView>(R.id.profilPicture)
-        profilePicture.setOnClickListener{
+        //val profilePicture = view?.findViewById<ImageView>(R.id.profilPicture)
+        //profilePicture.setOnClickListener{
+        binding.profilPicture.setOnClickListener{
             val userInfo : UserInfo = userInfoViewModel.userInfo.value!!
             val intent = Intent(activity, UserInfoActivity::class.java)
             intent.putExtra(UserInfoActivity.USERINFO_KEY, userInfo)
@@ -130,7 +141,7 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //if(requestCode == ) return
+        if(resultCode == 0) return
         when(requestCode){
             ADD_TASK_REQUEST_CODE -> {
                 val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
