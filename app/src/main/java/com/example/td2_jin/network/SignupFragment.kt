@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.example.td2_jin.LoginForm
 import com.example.td2_jin.R
@@ -91,11 +92,8 @@ class SignupFragment : Fragment() {
                 lifecycleScope.launch {
                     val response = userWebService.signup(form)
                     if(response.isSuccessful){
-                        println(SHARED_PREF_TOKEN_KEY)
-                        PreferenceManager.getDefaultSharedPreferences(context).edit {
-                            putString(SHARED_PREF_TOKEN_KEY,response.body()?.token)
-                        }
-                        println(Api.INSTANCE.getToken())
+                        Api.INSTANCE.setToken(response.body()?.token!!)
+                        findNavController().navigate(R.id.action_signupFragment_to_taskListFragment)
                     }else{
                         Toast.makeText(context, response.errorBody()!!.string(), Toast.LENGTH_LONG).show()
                     }

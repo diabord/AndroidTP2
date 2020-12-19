@@ -1,6 +1,7 @@
 package com.example.td2_jin.network
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
 import com.example.td2_jin.network.Api.Companion.BASE_URL
@@ -59,5 +60,11 @@ class Api(private val context: Context) {
 
     fun getToken() : String{
         return PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")!!
+    }
+
+    fun setToken (value : String) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putString(SHARED_PREF_TOKEN_KEY, value)
+        }
     }
 }

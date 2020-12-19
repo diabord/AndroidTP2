@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -45,7 +46,6 @@ class TaskListFragment : Fragment() {
     private val taskListViewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
     private val userInfoViewModel: UserInfoViewModel by viewModels()
 
-    //private lateinit var binding: FragmentTaskListBinding
     private var _binding: FragmentTaskListBinding? = null
     private val binding get() = _binding!!
 
@@ -89,6 +89,11 @@ class TaskListFragment : Fragment() {
             //val task = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+        }
+
+        binding.buttonDeconnexion.setOnClickListener() {
+            Api.INSTANCE.setToken("")
+            findNavController().navigate(R.id.action_taskListFragment_to_authenticationFragment2)
         }
 
         /*tasksRepository.taskList.observe(viewLifecycleOwner, Observer {

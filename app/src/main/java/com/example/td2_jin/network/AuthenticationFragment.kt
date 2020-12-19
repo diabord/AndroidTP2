@@ -28,6 +28,12 @@ class AuthenticationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(Api.INSTANCE.getToken() != ""){
+            findNavController().navigate(R.id.action_authenticationFragment_to_taskListFragment)
+            return
+        }
+
         view.findViewById<Button>(R.id.loginAuthentification)?.setOnClickListener {
             findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment)
         }

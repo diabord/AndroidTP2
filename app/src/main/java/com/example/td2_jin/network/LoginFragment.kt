@@ -15,6 +15,7 @@ import com.example.td2_jin.LoginForm
 import com.example.td2_jin.R
 import com.example.td2_jin.userinfo.UserInfoViewModel
 import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.example.td2_jin.LoginResponse
 import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
@@ -52,11 +53,8 @@ class LoginFragment : Fragment() {
                     lifecycleScope.launch {
                         val response = userWebService.login(loginForm)
                         if(response.isSuccessful){
-                            println(SHARED_PREF_TOKEN_KEY)
-                            PreferenceManager.getDefaultSharedPreferences(context).edit {
-                                putString(SHARED_PREF_TOKEN_KEY,response.body()?.token)
-                            }
-                            println(Api.INSTANCE.getToken())
+                            Api.INSTANCE.setToken(response.body()?.token!!)
+                            findNavController().navigate(R.id.action_loginFragment_to_taskListFragment)
                         }else{
                             Toast.makeText(context, "Email ou mot de passe invalide", Toast.LENGTH_LONG).show()
                         }
