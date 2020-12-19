@@ -2,6 +2,7 @@ package com.example.td2_jin.network
 
 import com.example.td2_jin.LoginForm
 import com.example.td2_jin.LoginResponse
+import com.example.td2_jin.SignUpForm
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -19,4 +20,7 @@ interface UserWebService {
 
     @POST("users/login")
     suspend fun login(@Body user: LoginForm): Response<LoginResponse>
+
+    @POST("users/sign_up")
+    suspend fun signup(@Body user: SignUpForm): Response<LoginResponse>
 }
