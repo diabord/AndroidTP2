@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -33,6 +35,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 //import java.util.*
 
+@BindingAdapter("listItems")
+fun setListItems(recyclerView: RecyclerView, tasklist : LiveData<List<Task>>?) {
+    //taskListViewModel.taskList = tasklist;
+    if(tasklist != null) {
+        TaskListAdapter.INSTANCE.taskList = tasklist.value.orEmpty()
+        TaskListAdapter.INSTANCE.notifyDataSetChanged()
+    }
+}
 
 class TaskListFragment : Fragment() {
     /*private var _taskList = mutableListOf(
@@ -42,13 +52,12 @@ class TaskListFragment : Fragment() {
 
     //private val tasksRepository = TasksRepository()
 
-    private val taskListAdapter = TaskListAdapter()
+    private val taskListAdapter = TaskListAdapter.INSTANCE
     private val taskListViewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
     private val userInfoViewModel: UserInfoViewModel by viewModels()
 
     private var _binding: FragmentTaskListBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +67,7 @@ class TaskListFragment : Fragment() {
         /*val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
         return rootView*/
         _binding = FragmentTaskListBinding.inflate(inflater, container, false)
+        _binding?.lifecycleOwner = this
         val view = binding.root
         return view
     }
@@ -102,10 +112,10 @@ class TaskListFragment : Fragment() {
             taskListAdapter.notifyDataSetChanged()
         })*/
 
-        taskListViewModel.taskList.observe(viewLifecycleOwner, Observer<List<Task>>{ tasks ->
-            taskListAdapter.taskList = tasks.orEmpty()
-            taskListAdapter.notifyDataSetChanged()
-        })
+        /*taskListViewModel.taskList.observe(viewLifecycleOwner, Observer<List<Task>>{ tasks ->
+            //taskListAdapter.taskList = tasks.orEmpty()
+            //taskListAdapter.notifyDataSetChanged()
+        })*/
 
         userInfoViewModel.userInfo.observe(viewLifecycleOwner, {
             binding.userInfo = it
@@ -140,6 +150,8 @@ class TaskListFragment : Fragment() {
             startActivityForResult(intent, EDIT_USER_INFO_CODE)
             //startActivity(intent);
         }
+
+        binding.taskListViewModel = taskListViewModel
 
         taskListViewModel.loadTasks();
         userInfoViewModel.loadUserInfo()

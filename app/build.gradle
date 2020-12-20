@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version" // vérifier que votre version de kotlin est la même
+    id 'kotlin-kapt'
 }
 
 android {

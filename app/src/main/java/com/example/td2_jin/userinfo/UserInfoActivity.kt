@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore.Files.getContentUri
 import android.text.Editable
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -24,6 +27,8 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.td2_jin.R
+import com.example.td2_jin.databinding.ActivityUserInfoBinding
+import com.example.td2_jin.databinding.FragmentTaskListBinding
 import com.example.td2_jin.network.Api
 import com.example.td2_jin.network.UserInfo
 import com.example.td2_jin.task.TaskActivity
@@ -47,22 +52,27 @@ class UserInfoActivity : AppCompatActivity() {
 
     private var userInfo : UserInfo? = null
 
+    private lateinit var binding: ActivityUserInfoBinding
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_info)
+        binding = ActivityUserInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //setContentView(R.layout.activity_user_info)
 
         userInfo = intent.getSerializableExtra(USERINFO_KEY) as? UserInfo
+        binding.userInfo = userInfo
 
-        findViewById<Button>(R.id.take_picture_button).setOnClickListener {
+       binding.takePictureButton.setOnClickListener {
             askCameraPermissionAndOpenCamera()
         }
 
-        findViewById<Button>(R.id.upload_image_button).setOnClickListener {
+        binding.uploadImageButton.setOnClickListener {
             pickInGallery.launch("image/*")
         }
 
-        findViewById<ImageButton>(R.id.imageButtonValidate).setOnClickListener {
+        binding.imageButtonValidate.setOnClickListener {
             updateUserInfo()
         }
     }
@@ -98,9 +108,6 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private fun updateUserInfo(){
-        userInfo?.firstName = findViewById<EditText>(R.id.Prenom).text.toString()
-        userInfo?.lastName = findViewById<EditText>(R.id.Nom).text.toString()
-        userInfo?.email = findViewById<EditText>(R.id.Email).text.toString()
         intent.putExtra(UserInfoActivity.USERINFO_KEY, userInfo)
         setResult(1,intent)
         finish()

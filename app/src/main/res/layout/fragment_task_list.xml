@@ -8,6 +8,9 @@
         <variable
             name="userInfo"
             type="com.example.td2_jin.network.UserInfo" />
+        <variable
+            name="taskListViewModel"
+            type="com.example.td2_jin.tasklist.TaskListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,6 +56,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:listItems="@{taskListViewModel.taskList}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profilPicture">
 

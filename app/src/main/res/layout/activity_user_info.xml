@@ -1,58 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".task.TaskActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <data>
+        <variable
+            name="userInfo"
+            type="com.example.td2_jin.network.UserInfo" />
+    </data>
 
-    <Button
-        android:id="@+id/upload_image_button"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choisir une Image" />
+        tools:context=".task.TaskActivity">
 
-    <Button
-        android:id="@+id/take_picture_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Prendre une photo" />
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/Prenom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="firstname" />
+        <Button
+            android:id="@+id/upload_image_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choisir une Image" />
 
-    <EditText
-        android:id="@+id/Nom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="lastname" />
+        <Button
+            android:id="@+id/take_picture_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prendre une photo" />
 
-    <EditText
-        android:id="@+id/Email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="email" />
+        <EditText
+            android:id="@+id/Prenom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={userInfo.firstName}"
+            android:autofillHints="firstname" />
 
-    <ImageButton
-        android:id="@+id/imageButtonValidate"
-        android:layout_width="68dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="#03FA03"
-        android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="?android:attr/textCheckMark" />
+        <EditText
+            android:id="@+id/Nom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={userInfo.lastName}"
+            android:autofillHints="lastname" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={userInfo.email}"
+            android:autofillHints="email" />
+
+        <ImageButton
+            android:id="@+id/imageButtonValidate"
+            android:layout_width="68dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#03FA03"
+            android:tint="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="?android:attr/textCheckMark" />
+
+    </LinearLayout>
+</layout>

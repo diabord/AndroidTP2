@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".task.TaskActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="task"
+            type="com.example.td2_jin.tasklist.Task" />
+    </data>
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        tools:context=".task.TaskActivity">
 
-        <TextView
-            android:id="@+id/task_title"
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_bright" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:background="#FF0000"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
-
-        <ImageButton
-            android:id="@+id/editButton"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/task_title"
+                android:layout_width="304dp"
+                android:layout_height="match_parent"
+                android:text='@{task.title + "  |  " + task.description}'
+                android:background="@android:color/holo_blue_bright" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:background="#FF0000"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
+
+            <ImageButton
+                android:id="@+id/editButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>
