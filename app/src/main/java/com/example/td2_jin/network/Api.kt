@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
-import com.example.td2_jin.network.Api.Companion.BASE_URL
-//import com.example.td2_jin.network.Api.Companion.TOKEN
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,7 +13,6 @@ import retrofit2.Retrofit
 class Api(private val context: Context) {
     companion object {
         private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
-       // private const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMDYsImV4cCI6MTYzOTQwNjM4NH0.2Zu5rXcbWhoLRwG6AXI5CCzpNVaO86D8uUV2GLpt0MI"
         lateinit var INSTANCE: Api
 
     }

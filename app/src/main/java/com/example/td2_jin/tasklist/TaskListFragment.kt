@@ -63,13 +63,12 @@ class TaskListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         /*val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
         return rootView*/
         _binding = FragmentTaskListBinding.inflate(inflater, container, false)
         _binding?.lifecycleOwner = this
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

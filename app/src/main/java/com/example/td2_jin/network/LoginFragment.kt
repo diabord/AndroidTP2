@@ -22,11 +22,6 @@ import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LoginFragment : Fragment() {
 
     private val userWebService = Api.INSTANCE.userWebService
@@ -34,7 +29,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
