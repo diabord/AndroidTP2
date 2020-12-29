@@ -6,10 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Task(
         @SerialName("id")
-        val id : String,
+        val id : String = "",
         @SerialName("title")
-        var title : String,
+        var title : String = "",
         @SerialName("description")
-        var description: String = "default") : java.io.Serializable{
+        var description: String = "")
+: java.io.Serializable{
 
 }

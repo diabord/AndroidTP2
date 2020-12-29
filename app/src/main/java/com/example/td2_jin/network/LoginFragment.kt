@@ -6,56 +6,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.edit
-import androidx.fragment.app.viewModels
 import com.example.td2_jin.LoginForm
 import com.example.td2_jin.R
-import com.example.td2_jin.userinfo.UserInfoViewModel
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
-import com.example.td2_jin.LoginResponse
-import com.example.td2_jin.SHARED_PREF_TOKEN_KEY
+import com.example.td2_jin.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class LoginFragment : Fragment() {
 
     private val userWebService = Api.INSTANCE.userWebService
+
+    private var _binding : FragmentLoginBinding? = null
+    private val binding get() = _binding !!
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
+    ): View {
+        // Inflate the layout for this fragment
+        //return inflater.inflate(R.layout.fragment_login, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding?.lifecycleOwner = this
+
+        binding.loginForm = LoginForm()
+        return binding.root
     }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            var emailLogin: EditText
-            var passwordLogin: EditText
-            view.findViewById<Button>(R.id.Login).setOnClickListener {
-                emailLogin = view.findViewById(R.id.emailLogin)
-                passwordLogin = view.findViewById(R.id.passwordLogin)
-                if(TextUtils.isEmpty(emailLogin.text)){
-                    emailLogin.setError("Ce champ doit être rempli")
-                }else if (TextUtils.isEmpty(passwordLogin.text)){
-                    passwordLogin.setError("Ce champ doit être rempli.")
-                }else{
-                    val loginForm = LoginForm(emailLogin.text.toString(),passwordLogin.text.toString())
-                    lifecycleScope.launch {
-                        val response = userWebService.login(loginForm)
-                        if(response.isSuccessful){
-                            Api.INSTANCE.setToken(response.body()?.token!!)
-                            findNavController().navigate(R.id.action_loginFragment_to_taskListFragment)
-                        }else{
-                            Toast.makeText(context, "Email ou mot de passe invalide", Toast.LENGTH_LONG).show()
-                        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val loginForm = binding.loginForm!!
+        binding.LoginButton.setOnClickListener {
+            if(TextUtils.isEmpty(loginForm.email)){
+                binding.emailLogin.error = "Ce champ doit être rempli"
+            }else if (TextUtils.isEmpty(loginForm.password)){
+                binding.passwordLogin.error = "Ce champ doit être rempli."
+            }else{
+                lifecycleScope.launch {
+                    val response = userWebService.login(loginForm)
+                    if(response.isSuccessful){
+                        Api.INSTANCE.setToken(response.body()?.token!!)
+                        findNavController().navigate(R.id.action_loginFragment_to_taskListFragment)
+                    }else{
+                        Toast.makeText(context, "Email ou mot de passe invalide", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
 
-    
+    }
+
 }

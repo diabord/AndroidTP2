@@ -1,10 +1,5 @@
 package com.example.td2_jin.network
 
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.td2_jin.tasklist.Task
-
 class UserInfoRepository {
     private val userWebService = Api.INSTANCE.userWebService
 
@@ -18,6 +13,7 @@ class UserInfoRepository {
         return if (response.isSuccessful) response.body() else null
     }
 
+    //info : plus utile
     /*suspend fun updateUserAvatar(userAvatar: String): String? {
         //val response = userWebService.updateAvatar()
         return if (response.isSuccessful) response.body() else null

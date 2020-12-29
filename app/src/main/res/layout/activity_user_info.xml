@@ -24,34 +24,34 @@
             android:id="@+id/upload_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choisir une Image" />
+            android:text="@string/choose_picture" />
 
         <Button
             android:id="@+id/take_picture_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Prendre une photo" />
+            android:text="@string/take_picture" />
 
         <EditText
             android:id="@+id/Prenom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={userInfo.firstName}"
-            android:autofillHints="firstname" />
+            android:hint="@string/firstname"
+            android:text="@={userInfo.firstName}" />
 
         <EditText
             android:id="@+id/Nom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={userInfo.lastName}"
-            android:autofillHints="lastname" />
+            android:hint="@string/lastname"
+            android:text="@={userInfo.lastName}" />
 
         <EditText
             android:id="@+id/Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={userInfo.email}"
-            android:autofillHints="email" />
+            android:hint="@string/email"
+            android:text="@={userInfo.email}" />
 
         <ImageButton
             android:id="@+id/imageButtonValidate"

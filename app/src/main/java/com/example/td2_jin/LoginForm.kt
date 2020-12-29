@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LoginForm(
         @SerialName("email")
-    val email : String,
+    var email : String = "",
         @SerialName("password")
-    val password : String
+    var password : String = ""
 ): java.io.Serializable{
 
 }

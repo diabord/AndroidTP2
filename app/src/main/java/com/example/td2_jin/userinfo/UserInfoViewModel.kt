@@ -2,11 +2,9 @@ package com.example.td2_jin.userinfo
 
 import android.widget.Toast
 import androidx.lifecycle.*
-import com.example.td2_jin.network.TasksRepository
 import com.example.td2_jin.network.UserInfo
 import com.example.td2_jin.network.UserInfoRepository
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class UserInfoViewModel : ViewModel() {
     private val repository = UserInfoRepository()
@@ -31,7 +29,7 @@ class UserInfoViewModel : ViewModel() {
                 _userInfo.value = editableUserInfo!!
                 feedback.setText("La modification de l'user à réussi")
             }else{
-                feedback.setText("La modification de l'user à échoué, email invalide")
+                feedback.setText("La modification de l'user à échoué, email sans doute invalide")
             }
             feedback.show();
         }

@@ -1,10 +1,8 @@
 package com.example.td2_jin.tasklist
 
 import androidx.lifecycle.*
-import com.example.td2_jin.network.Api
 import com.example.td2_jin.network.TasksRepository
 import kotlinx.coroutines.launch
-import okhttp3.internal.notifyAll
 
 class TaskListViewModel : ViewModel() {
 

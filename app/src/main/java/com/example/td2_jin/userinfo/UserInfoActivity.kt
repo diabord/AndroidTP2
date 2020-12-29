@@ -9,41 +9,23 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore.Files.getContentUri
-import android.text.Editable
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.core.net.toUri
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.td2_jin.R
 import com.example.td2_jin.databinding.ActivityUserInfoBinding
-import com.example.td2_jin.databinding.FragmentTaskListBinding
 import com.example.td2_jin.network.Api
 import com.example.td2_jin.network.UserInfo
-import com.example.td2_jin.task.TaskActivity
-import com.example.td2_jin.tasklist.Task
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class UserInfoActivity : AppCompatActivity() {
     companion object {
         const val EDIT_USER_INFO_CODE = 777
-        const val IMAGE_KEY = "IMAGE"
         const val USERINFO_KEY = "Userinfo"
     }
 
